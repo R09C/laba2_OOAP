@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dataset Uploader</title>
+    <style>
+        #progressBarContainer {
+            width: 100%;
+            background-color: #ddd;
+            display: none;
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 30px;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Dataset Uploader</h1>
+
+    <h2>Upload File</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="file">Select File:</label>
+        <input type="file" name="file" id="file" required>
+        <button type="button" onclick="uploadFile()">Upload</button>
+    </form>
+
+    <div id="progressBarContainer">
+        <div id="progressBar">0%</div>
+    </div>
+    <div id="status"></div>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('file');
+            const progressBarContainer = document.getElementById('progressBarContainer');
+            const progressBar = document.getElementById('progressBar');
+            const statusDiv = document.getElementById('status');
+
+            if (!fileInput.files.length) {
+                statusDiv.textContent = 'Please select a file.';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            statusDiv.textContent = 'Uploading...';
+
+            try {
+                const response = await fetch('/upload_dataset', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    statusDiv.textContent = result.message;
+                    progressBar.style.width = '100%';
+                    progressBar.textContent = '100%';
+                    setTimeout(() => progressBarContainer.style.display = 'none', 1000);
+                } else {
+                    statusDiv.textContent = result.message;
+                    progressBarContainer.style.display = 'none';
+                }
+            } catch (error) {
+                statusDiv.textContent = `Upload error: ${error}`;
+                progressBarContainer.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

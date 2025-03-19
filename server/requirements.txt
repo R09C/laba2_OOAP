@@ -1,0 +1,6 @@
+flask
+pyngrok
+pandas 
+h5py    
+requests
+kaggle
