@@ -3,7 +3,7 @@ from pyngrok import ngrok
 import requests
 import logging
 import os
-from config import Config
+from ..config import Config
 
 app = Flask(
     __name__, template_folder=os.path.join(os.path.dirname(__file__), "..", "templates")

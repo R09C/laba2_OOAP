@@ -2,9 +2,9 @@ import threading
 import logging
 import os
 import shutil
-from gateway.api_gateway import app as gateway_app, setup_ngrok
-from services.download_service import app as download_app
-from config import Config
+from server.gateway.api_gateway import app as gateway_app, setup_ngrok
+from server.services.download_service import app as download_app
+from server.config import Config
 from pyngrok.exception import PyngrokNgrokError
 
 logging.basicConfig(level=logging.INFO)
